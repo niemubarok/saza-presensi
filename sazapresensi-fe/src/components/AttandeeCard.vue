@@ -1,33 +1,39 @@
 <template>
   <div style="height: fit-content" class="q-pa-xs zoom">
-    <q-card
-      :style="
-        props.status == 'ontime'
-          ? 'border-left: 3px solid green; border-bottom: 1px solid green'
-          : 'border-left:3px solid red; border-bottom: 1px solid red'
-      "
-      style="width: 200px; border-radius: 8px"
-      class="q-pr-sm"
+    <transition
+      appear
+      enter-active-class="animated zoomIn"
+      leave-active-class="animated fadeOut"
     >
-      <q-item>
-        <q-item-section avatar>
-          <q-avatar class="rounded-borders" style="margin-left: -10px">
-            <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
-          </q-avatar>
-        </q-item-section>
+      <q-card
+        :style="
+          props.status == 'ontime'
+            ? 'border-left: 3px solid green; border-bottom: 1px solid green'
+            : 'border-left:3px solid red; border-bottom: 1px solid red'
+        "
+        style="width: 200px; border-radius: 8px"
+        class="q-pr-sm"
+      >
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar class="rounded-borders" style="margin-left: -10px">
+              <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
+            </q-avatar>
+          </q-item-section>
 
-        <q-item-section>
-          <q-item-label
-            style="width: 150px; margin-left: -15px"
-            class="textOverflow text-left text-weight-bold"
-            >{{ props.name }}</q-item-label
-          >
-          <q-item-label style="margin-left: -15px" caption class="text-left"
-            >{{ props.in }} - {{ props.out }}</q-item-label
-          >
-        </q-item-section>
-      </q-item>
-    </q-card>
+          <q-item-section>
+            <q-item-label
+              style="width: 150px; margin-left: -15px"
+              class="textOverflow text-left text-weight-bold"
+              >{{ props.name }}</q-item-label
+            >
+            <q-item-label style="margin-left: -15px" caption class="text-left"
+              >{{ props.in }} - {{ props.out }}</q-item-label
+            >
+          </q-item-section>
+        </q-item>
+      </q-card>
+    </transition>
   </div>
 </template>
 
