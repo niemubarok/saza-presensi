@@ -1,8 +1,8 @@
 <template>
-  <div class="row text-center">
+  <div class="row text-center bg-grey-1">
     <div class="column">
       <q-card
-        class="fixed-top-left bg-dark text-center q-pt-md q-ma-md"
+        class="bg-dark fixed-top-left text-center q-pt-md q-ma-md"
         style="width: 200px; height: 400px"
       >
         <q-img
@@ -181,3 +181,18 @@ const submit = () => {
   inputValue.value = "";
 };
 </script>
+
+<style >
+.card-border-radius {
+  border-radius: 8px;
+}
+.glass {
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.267);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.1px);
+  -webkit-backdrop-filter: blur(7.1px);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+}
+</style>

@@ -8,11 +8,17 @@
       <q-card
         :style="
           props.status == 'ontime'
-            ? 'border-left: 3px solid green; border-bottom: 1px solid green'
-            : 'border-left:3px solid red; border-bottom: 1px solid red'
+            ? 'border-left: 4px solid green;'
+            : 'border-left:4px solid red;'
         "
-        style="width: 200px; border-radius: 8px"
-        class="q-pr-sm"
+        style="
+          width: 200px;
+          border-radius: 8px;
+          border-top: 0px;
+          border-right: 0px;
+          border-bottom: 0px;
+        "
+        class="q-pr-sm glass shadow-6"
       >
         <q-item>
           <q-item-section avatar>
@@ -66,4 +72,13 @@ const props = defineProps({
   text-overflow: ellipsis;
   width: 400px;
 }
+
+/* .glass {
+  background: rgba(255, 255, 255, 0.267);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.1px);
+  -webkit-backdrop-filter: blur(7.1px);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+} */
 </style>
