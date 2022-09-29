@@ -11,7 +11,7 @@ export const useStudentScheduleStore = defineStore("StudentSchedules", {
       },
       {
         id: 2,
-        nis: "0012421388",
+        nis: "0009107838",
         schedule_id: 2,
       },
     ]),

@@ -43,6 +43,10 @@
           </q-select>
         </div>
       </div>
+      <q-card-actions align="right">
+        <!-- <q-btn flat label="Action 1" /> -->
+        <q-btn flat label="Simpan" @click="onSaveSettings" />
+      </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
@@ -67,17 +71,26 @@ const optionModels = ref({
 const locationOptions = [
   {
     label: "Kelas VII",
-    value: "Kelasvii",
+    id: "klsvii",
   },
   {
     label: "Kelas VIII",
-    value: "Kelasviii",
+    id: "klsviii",
   },
   {
     label: "Kelas IX",
-    value: "Kelasix",
+    id: "klsix",
   },
 ];
+
+const onSaveSettings = () => {
+  // console.log(optionModels.value.location.id);
+  localStorage.setItem("location", optionModels.value.location.id);
+  // console.log(window.location);
+  window.location.reload();
+  dialogRef.value.hide();
+  // console.log(locationId);
+};
 
 defineEmits([
   // REQUIRED; need to specify some events that your

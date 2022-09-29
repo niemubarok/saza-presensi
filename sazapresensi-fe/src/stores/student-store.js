@@ -14,7 +14,7 @@ export const useStudentStore = defineStore("student", {
         status: "aktif",
       },
       {
-        nis: "0009107839",
+        nis: "0009107838",
         name: "Husni",
         gender: "L",
         birthdate: "26-03-1996",
@@ -23,15 +23,15 @@ export const useStudentStore = defineStore("student", {
         photo: "",
         status: "tidak aktif",
       },
-    ]
+    ],
   }),
   getters: {
     //  getStudentScheduleByNis: (state) => {
     //   return (nis) => state.all.find((val) => val.nis == nis);
     // },
-    getStudentByNis:(state)=>{
-      return (nis)=>state.all.find((val) =>val.nis == nis)
-    }
+    getStudentByNis: (state) => {
+      return (nis) => state.all.find((val) => val.nis == nis);
+    },
   },
   actions: {},
 });

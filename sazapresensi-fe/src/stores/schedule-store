@@ -17,7 +17,7 @@ export const useScheduleStore = defineStore("schedules", {
         subject_id: "hds08",
         nip: "0009107839",
         clock_id: 2,
-        class_id: "klsviii",
+        class_id: "klsvii",
         day: "Mon",
         academic_year_id: "20222023",
       },

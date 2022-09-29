@@ -108,6 +108,8 @@ const splitterModel = ref(20);
 const inputValue = ref("");
 const input = ref(null);
 
+const currentDate = new Date();
+
 onStartTyping(() => {
   if (!input.value.active) {
     input.value.focus();
@@ -118,10 +120,10 @@ const attendeeName = ref("");
 
 const attendee = ref({
   id: inputValue.value,
-  name: "Arina",
-  class_id: "klsvii",
+  name: "",
+  class_id: "",
   date: new Date(2022, 9, 27),
-  in: "10.20",
+  in: currentDate.getTime(),
   out: "14.00",
   status: "late",
 });
@@ -134,18 +136,24 @@ const onClickSettings = () => {
   settingsDialog.update();
 };
 
+const locationId = localStorage.getItem("location");
+
 const submit = () => {
-  const student = useStudents.getStudentByNis("0012421387");
+  // console.log(useSettings.location_id);
+  console.log(currentDate.getTime().toLocaleString());
+  // console.log(locationId);
+  const student = useStudents.getStudentByNis(inputValue.value);
   const studentSchedule = useStudentSchedules.getStudentScheduleByNis(
     inputValue.value
   );
 
   const schedule = useSchedules.getScheduleById(studentSchedule?.schedule_id);
-  // console.log(student?.name);
+  // console.log(schedule.class_id == locationId);
+  // console.log(schedule.class_id);
 
-  const isStudent = studentSchedule?.nis == inputValue.value;
+  const isStudent = student?.nis == inputValue.value;
 
-  const isRightClass = schedule?.class_id == useSettings.class_id;
+  const isRightClass = schedule?.class_id === locationId.toString();
   attendee.value.name = student?.name;
 
   if (isStudent) {

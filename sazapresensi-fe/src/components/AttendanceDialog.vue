@@ -1,7 +1,9 @@
 <template>
   <q-dialog ref="dialogRef" @hide="onDialogHide">
-    <q-card class="q-px-xl q-pt-xl glass"
-      style="padding-left:100px; padding-right:100px; fit-content; height: fit-content">
+    <q-card
+      class="q-px-xl q-pt-xl glass"
+      style="fit-content; height: fit-content"
+    >
       <!-- <AttandeeCard
         :name="props.name"
         :in="props.in"
@@ -9,15 +11,24 @@
         :status="props.status"
       /> -->
 
-      <center>
-        <SuccessCheckMark class="q-mr-xl q-mt-md" style="margin-left:-20px" />
+      <div class="text-center flex flex-center items-center">
+        <SuccessCheckMark class="q-mt-md" style="margin-right: 90px" />
         <div class="q-mt-xl q-pt-xl">
-          <p style="font-size:20px;margin-bottom: -5px;" class="text-weight-bold text-white">{{props.name}}</p>
+          <p
+            style="font-size: 20px; margin-bottom: -5px"
+            class="text-weight-bold text-white"
+          >
+            {{ props.name }}
+          </p>
           <q-separator dark />
-          <p style="font-size:40px;" class=" q-pa-md text-weight-bolder text-white">Berhasil Absen</p>
+          <p
+            style="font-size: 40px"
+            class="q-pa-md text-weight-bolder text-white"
+          >
+            Berhasil Absen
+          </p>
         </div>
-      </center>
-
+      </div>
     </q-card>
   </q-dialog>
 </template>
