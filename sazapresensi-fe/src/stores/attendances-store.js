@@ -998,12 +998,12 @@ export const useAttendancesStore = defineStore("attendance", {
   }),
   getters: {
     getAttendance: (state) => {
-      return state.attendances.sort().reverse();
+      return state.attendances.sort();
     },
   },
   actions: {
     addAttendance(data) {
-      this.attendances.push(data);
+      this.attendances.unshift(data);
       // console.log(data);
     },
   },

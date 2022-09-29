@@ -1,18 +1,19 @@
 <template>
   <div class="window-height">
     <q-table
+      binary-sort
       title="DAFTAR HADIR SANTRI"
       :rows="tableRows"
       :columns="columns"
       row-key="name"
       :filter="filter"
       rows-per-page-label="Per halaman "
-      :rows-per-page-options="[30, 50, 100]"
+      :rows-per-page-options="[40]"
       grid
       style="padding-left: 250px"
       title-class="text-weight-bold q-px-xl bg-grey-3  rounded-borders"
-      binary-state-sort
       dense
+      binary-state-sort
     >
       <template #top-left>
         <div style="margin-bottom: -20px" class="row">
@@ -27,8 +28,8 @@
                   style="border-left: 3px solid dark"
                   class="q-px-xs text-weight-bolder"
                   >DAFTAR KEHADIRAN SANTRI</span
-                ></q-chip
-              >
+                >
+              </q-chip>
             </div>
           </q-card>
 
@@ -44,8 +45,8 @@
         </div>
         <!-- </q-banner> -->
       </template>
-      <template v-slot:top-right>
-        <q-input
+      <template v-slot:top-right="props">
+        <!-- <q-input
           borderless
           dense
           debounce="300"
@@ -56,7 +57,30 @@
           <template v-slot:append>
             <q-icon name="search" />
           </template>
-        </q-input>
+        </q-input> -->
+        <div class="column">
+          <div>
+            <q-chip outline size="md" class="card-border-radius text-dark">
+              <span> Lokasi: </span>
+              <span
+                style="margin-right: -5px"
+                class="q-ml-xs q-px-md card-border-radius bg-dark text-white"
+              >
+                Masjid jami salsabiila zainia</span
+              >
+            </q-chip>
+          </div>
+        </div>
+
+        <div class="column q-px-md">
+          <q-chip
+            flat
+            size="xs"
+            dense
+            class="card-border-radius text-dark q-pa-sm"
+            >halaman : {{ props.pagination.page }}
+          </q-chip>
+        </div>
       </template>
 
       <template v-slot:item="props">
@@ -71,7 +95,7 @@
       <template v-slot:pagination="scope">
         <div
           class="row fixed-bottom-right q-mb-md z-top"
-          style="margin-right: 300px"
+          style="margin-right: 100px"
         >
           <div class="column q-pr-xl">
             <div class="row">
@@ -115,9 +139,13 @@
               :icon="fasChevronLeft"
               size="xs"
               color="blue-grey-8"
+              :disable="scope.isFirstPage"
               @click="scope.prevPage()"
-              ><q-tooltip>Halaman Sebelumnya</q-tooltip></q-btn
             >
+              <q-tooltip v-if="!scope.isFirstPage"
+                >Halaman Sebelumnya</q-tooltip
+              >
+            </q-btn>
           </div>
 
           <div class="column">
@@ -127,11 +155,15 @@
               :icon="fasChevronRight"
               size="xs"
               color="blue-grey-8"
+              :disable="scope.isLastPage"
               @click="scope.nextPage()"
-              ><q-tooltip>Halaman Selanjutnya</q-tooltip></q-btn
             >
+              <q-tooltip v-if="!scope.isLastPage"
+                >Halaman Selanjutnya</q-tooltip
+              >
+            </q-btn>
           </div>
-          <div class="column q-px-md">
+          <!-- <div class="column q-px-md">
             <q-chip
               outline
               size="xs"
@@ -139,7 +171,7 @@
               class="card-border-radius text-dark q-pa-sm"
               >halaman : {{ scope.pagination.page }}</q-chip
             >
-          </div>
+          </div> -->
         </div>
       </template>
     </q-table>
@@ -209,5 +241,13 @@ onMounted(() => {
 /* div.q-table--dense div.q-table__top div.q-table-control {
   padding-bottom: 5px;
 } */
+.glass {
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.267);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.1px);
+  -webkit-backdrop-filter: blur(7.1px);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+}
 </style>
-

@@ -1,13 +1,23 @@
 <template>
   <q-dialog ref="dialogRef" @hide="onDialogHide">
-    <q-card class="bg-green-5" style="width: 50%; height: 50%">
+    <q-card class="q-px-xl q-pt-xl glass"
+      style="padding-left:100px; padding-right:100px; fit-content; height: fit-content">
       <!-- <AttandeeCard
         :name="props.name"
         :in="props.in"
         :out="props.out"
         :status="props.status"
       /> -->
-      <q-icon name="done"></q-icon>
+
+      <center>
+        <SuccessCheckMark class="q-mr-xl q-mt-md" style="margin-left:-20px" />
+        <div class="q-mt-xl q-pt-xl">
+          <p style="font-size:20px;margin-bottom: -5px;" class="text-weight-bold text-white">{{props.name}}</p>
+          <q-separator dark />
+          <p style="font-size:40px;" class=" q-pa-md text-weight-bolder text-white">Berhasil Absen</p>
+        </div>
+      </center>
+
     </q-card>
   </q-dialog>
 </template>
@@ -15,6 +25,7 @@
 <script setup>
 import AttandeeCard from "./AttandeeCard.vue";
 import { useDialogPluginComponent } from "quasar";
+import SuccessCheckMark from "./SuccessCheckMark.vue";
 const props = defineProps({
   name: String,
   in: String,
@@ -31,3 +42,14 @@ defineEmits([
 const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
   useDialogPluginComponent();
 </script>
+
+
+<style scoped>
+.glass {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(20, 220, 117, 0.378);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+</style>

@@ -10,6 +10,7 @@ const routes = [
       },
       {
         path: "/anjungan",
+        name: 'anjungan',
         component: () => import("src/pages/AttendancePage.vue"),
         meta: {
           isSidebar: false,

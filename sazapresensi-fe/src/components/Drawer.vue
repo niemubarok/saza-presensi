@@ -1,20 +1,23 @@
 <template>
   <q-scroll-area class="fit">
     <q-list padding>
-      <q-expansion-item expand-icon=" ">
+      <!-- <q-expansion-item expand-icon=" ">
         <template #header>
           <q-icon name="dashboard" color="grey" size="sm" />
           <q-item-label header class="text-weight-bold text-uppercase">
             DASHBOARD
           </q-item-label>
         </template>
-      </q-expansion-item>
+      </q-expansion-item> -->
+
+      <!-- <ExpansionMenu :icon="'dashboard'" title="MASTER DATA" link="Dashboard" /> -->
+
 
       <!-- <q-separator class="q-my-md" /> -->
 
-      <ExpansionMenu title="MASTER DATA" :links="master" />
+      <ExpansionMenu :ikon="'folder'" title="MASTER DATA" :links="master" />
       <q-separator class="q-mt-md q-mb-xs" />
-      <ExpansionMenu title="PRESENSI" :links="master" />
+      <ExpansionMenu icon="dashboard" title="PRESENSI" :links="master" />
     </q-list>
   </q-scroll-area>
 </template>
@@ -32,11 +35,11 @@ import {
 
 // const componentState = useComponentStore();
 
-const links1 = [
-  { icon: "dashboard", text: "Dashboard" },
-  // { icon: 'folder', text: 'Master Data' },
-  // { icon: 'subscriptions', text: 'Subscriptions' }
-];
+// const links1 = [
+// { icon: "dashboard", text: "Dashboard" },
+// { icon: 'folder', text: 'Master Data' },
+// { icon: 'subscriptions', text: 'Subscriptions' }
+// ];
 const master = [
   { icon: fasPersonChalkboard, text: "Guru" },
   { icon: fasUserGroup, text: "Santri" },

@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 
 export const useStudentStore = defineStore("student", {
-  state: () => {
-    students: [
+  state: () => ({
+    all: [
       {
         nis: "0012421387",
         name: "Rian",
@@ -23,8 +23,15 @@ export const useStudentStore = defineStore("student", {
         photo: "",
         status: "tidak aktif",
       },
-    ];
+    ]
+  }),
+  getters: {
+    //  getStudentScheduleByNis: (state) => {
+    //   return (nis) => state.all.find((val) => val.nis == nis);
+    // },
+    getStudentByNis:(state)=>{
+      return (nis)=>state.all.find((val) =>val.nis == nis)
+    }
   },
-  getters: {},
   actions: {},
 });

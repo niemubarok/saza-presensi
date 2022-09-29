@@ -34,8 +34,8 @@
               >{{ props.name }}</q-item-label
             >
             <q-item-label style="margin-left: -15px" caption class="text-left"
-              >{{ props.in }} - {{ props.out }}</q-item-label
-            >
+              >{{ props.in }} - {{ props.out }}
+            </q-item-label>
           </q-item-section>
         </q-item>
       </q-card>
@@ -52,15 +52,15 @@ const props = defineProps({
 });
 </script>
 
-<style >
+<style>
 .zoom {
-  transition: transform 0.2s; /* Animation */
+  transition: transform 0.2s;
+  /* Animation */
 }
 
 .zoom:hover {
-  transform: scale(
-    1.6
-  ); /*
+  transform: scale(1.6) translateX(-20px);
+  /*
      (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
   z-index: 100;
 }

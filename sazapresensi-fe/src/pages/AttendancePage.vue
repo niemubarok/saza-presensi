@@ -63,8 +63,8 @@
       <AttendanceCardList />
     </div>
   </div>
-  <div class="q-pa-md fixed-bottom" style="width: 100px">
-    <!-- class="" -->
+  <div class="row q-pa-md fixed-bottom" style="width: 400px">
+    <q-btn flat color="grey" icon="settings" @click="onClickSettings()" />
     <q-btn
       flat
       color="grey"
@@ -77,8 +77,8 @@
 
 <script setup>
 import { useQuasar } from "quasar";
-import { ref } from "vue";
-import { onStartTyping, useArrayFind } from "@vueuse/core";
+import { onMounted, ref } from "vue";
+import { onStartTyping } from "@vueuse/core";
 import Clock from "src/components/Clock.vue";
 // import AttendanceTable from "src/components/AttendanceTable.vue";
 import AttendanceCardList from "src/components/AttendanceCardList.vue";
@@ -91,6 +91,8 @@ import { useScheduleStore } from "src/stores/schedule-store";
 import { useSettingStore } from "src/stores/setting-store";
 import { useClockStore } from "src/stores/clock-store";
 import AttendanceDialog from "src/components/AttendanceDialog.vue";
+import SettingsDialogue from "src/components/SettingsDialogue.vue";
+import { useStudentStore } from "src/stores/student-store";
 
 const useStudentSchedules = useStudentScheduleStore();
 const useSchedules = useScheduleStore();
@@ -98,6 +100,7 @@ const useAttendances = useAttendancesStore();
 // const componentState = useComponentStore();
 const useSettings = useSettingStore();
 const useClocks = useClockStore();
+const useStudents = useStudentStore();
 
 const $q = useQuasar();
 const splitterModel = ref(20);
@@ -123,30 +126,28 @@ const attendee = ref({
   status: "late",
 });
 
-// const submit = () => {
-//   const dialog = $q.dialog({
-//     progress: true,
-//     component: AttendanceDialog,
-//     componentProps: {
-//       name: attendee.value.name,
-//       in: attendee.value.in,
-//       out: attendee.value.out,
-//       status: attendee.value.status,
-//     },
-//   });
-//   dialog.update();
-//   setTimeout(() => {
-//     dialog.hide();
-//   }, 2000);
-// };
+const onClickSettings = () => {
+  const settingsDialog = $q.dialog({
+    progress: true,
+    component: SettingsDialogue,
+  });
+  settingsDialog.update();
+};
+
 const submit = () => {
-  const student = useStudentSchedules.getStudentScheduleByNis(inputValue.value);
+  const student = useStudents.getStudentByNis("0012421387");
+  const studentSchedule = useStudentSchedules.getStudentScheduleByNis(
+    inputValue.value
+  );
 
-  const schedule = useSchedules.getScheduleById(student?.schedule_id);
+  const schedule = useSchedules.getScheduleById(studentSchedule?.schedule_id);
+  // console.log(student?.name);
 
-  const isStudent = student?.nis == inputValue.value;
+  const isStudent = studentSchedule?.nis == inputValue.value;
 
   const isRightClass = schedule?.class_id == useSettings.class_id;
+  attendee.value.name = student?.name;
+
   if (isStudent) {
     if (isRightClass == false) {
       $q.notify({
@@ -156,6 +157,7 @@ const submit = () => {
         classes: "q-px-xl",
       });
     } else {
+      attendee.value.name = student?.name;
       useAttendances.addAttendance(attendee.value);
       const dialog = $q.dialog({
         progress: true,
@@ -170,9 +172,9 @@ const submit = () => {
       dialog.update();
       setTimeout(() => {
         dialog.hide();
-      }, 10000);
+      }, 2000);
     }
-    // else if(){
+    // else if () {
 
     // }
   } else {
@@ -182,10 +184,7 @@ const submit = () => {
 };
 </script>
 
-<style >
-.card-border-radius {
-  border-radius: 8px;
-}
+<style scoped>
 .glass {
   /* From https://css.glass */
   background: rgba(255, 255, 255, 0.267);
