@@ -46,7 +46,7 @@
 <script setup>
 const props = defineProps({
   name: String,
-  in: String,
+  in: Number,
   out: String,
   status: String,
 });

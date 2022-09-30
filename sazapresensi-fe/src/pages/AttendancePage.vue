@@ -80,7 +80,6 @@ import { useQuasar } from "quasar";
 import { onMounted, ref } from "vue";
 import { onStartTyping } from "@vueuse/core";
 import Clock from "src/components/Clock.vue";
-// import AttendanceTable from "src/components/AttendanceTable.vue";
 import AttendanceCardList from "src/components/AttendanceCardList.vue";
 import AttandeeCard from "src/components/AttandeeCard.vue";
 
@@ -108,7 +107,7 @@ const splitterModel = ref(20);
 const inputValue = ref("");
 const input = ref(null);
 
-const currentDate = new Date();
+const today = new Date();
 
 onStartTyping(() => {
   if (!input.value.active) {
@@ -122,8 +121,8 @@ const attendee = ref({
   id: inputValue.value,
   name: "",
   class_id: "",
-  date: new Date(2022, 9, 27),
-  in: currentDate.getTime(),
+  date: today.getDate().toLocaleString(),
+  in: today.getHours() + ":" + today.getMinutes(),
   out: "14.00",
   status: "late",
 });
@@ -139,17 +138,12 @@ const onClickSettings = () => {
 const locationId = localStorage.getItem("location");
 
 const submit = () => {
-  // console.log(useSettings.location_id);
-  console.log(currentDate.getTime().toLocaleString());
-  // console.log(locationId);
   const student = useStudents.getStudentByNis(inputValue.value);
   const studentSchedule = useStudentSchedules.getStudentScheduleByNis(
     inputValue.value
   );
 
   const schedule = useSchedules.getScheduleById(studentSchedule?.schedule_id);
-  // console.log(schedule.class_id == locationId);
-  // console.log(schedule.class_id);
 
   const isStudent = student?.nis == inputValue.value;
 

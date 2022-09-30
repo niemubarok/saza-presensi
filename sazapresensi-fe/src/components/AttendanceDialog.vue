@@ -39,7 +39,7 @@ import { useDialogPluginComponent } from "quasar";
 import SuccessCheckMark from "./SuccessCheckMark.vue";
 const props = defineProps({
   name: String,
-  in: String,
+  in: Number,
   out: String,
   status: String,
 });
