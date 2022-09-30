@@ -26,7 +26,7 @@
           ref="input"
           type="text"
           class="bg-dark text-dark no-border no-outline"
-          v-on:keyup.enter="submit"
+          v-on:keyup.enter="submitAttendance"
         />
         <Clock />
 
@@ -57,10 +57,21 @@
           </q-chip>
         </div>
       </q-card>
+      <div class="fixed-bottom-left text-center q-ma-md q-mb-xl">
+        <q-card
+          class="glass"
+          style="width: 200px; height: 100px; margin-top: -130px"
+        >
+          <q-card-section>
+            <div class="text-body text-white">Absen Untuk</div>
+            <q-chip class="text-h6 text-dark">{{ activityName }}</q-chip>
+          </q-card-section>
+        </q-card>
+      </div>
     </div>
-    <!-- <AttendanceTable /> -->
     <div class="column">
-      <AttendanceCardList />
+      <AttendanceCardList v-if="listMode == 'card'" />
+      <AttendanceTable v-else />
     </div>
   </div>
   <div class="row q-pa-md fixed-bottom" style="width: 400px">
@@ -79,35 +90,30 @@
 import { useQuasar } from "quasar";
 import { onMounted, ref } from "vue";
 import { onStartTyping } from "@vueuse/core";
+import { useStudentAtivitiesStore } from "src/stores/student-activities-store";
+
+//components
 import Clock from "src/components/Clock.vue";
 import AttendanceCardList from "src/components/AttendanceCardList.vue";
 import AttandeeCard from "src/components/AttandeeCard.vue";
-
-import { useComponentStore } from "src/stores/component-store";
-import { useAttendancesStore } from "src/stores/attendances-store";
-import { useStudentScheduleStore } from "src/stores/studentSchedule-store";
-import { useScheduleStore } from "src/stores/schedule-store";
-import { useSettingStore } from "src/stores/setting-store";
-import { useClockStore } from "src/stores/clock-store";
-import AttendanceDialog from "src/components/AttendanceDialog.vue";
 import SettingsDialogue from "src/components/SettingsDialogue.vue";
-import { useStudentStore } from "src/stores/student-store";
 
-const useStudentSchedules = useStudentScheduleStore();
-const useSchedules = useScheduleStore();
-const useAttendances = useAttendancesStore();
-// const componentState = useComponentStore();
-const useSettings = useSettingStore();
-const useClocks = useClockStore();
-const useStudents = useStudentStore();
+import { submit } from "src/services/submit-attendance-service";
+import { getTime } from "src/utilities/time-util";
+import AttendanceTable from "src/components/AttendanceTable.vue";
 
 const $q = useQuasar();
-const splitterModel = ref(20);
 
 const inputValue = ref("");
 const input = ref(null);
 
+const listMode = ref(localStorage.getItem("listMode"));
+
 const today = new Date();
+const useStudentAtivities = useStudentAtivitiesStore();
+const activity = () => useStudentAtivities.getActivityByTime(getTime().time);
+
+const activityName = ref();
 
 onStartTyping(() => {
   if (!input.value.active) {
@@ -115,17 +121,28 @@ onStartTyping(() => {
   }
 });
 
-const attendeeName = ref("");
+const scheduleChecker = () => {
+  if (activity() == undefined) {
+    activityName.value = "Belum waktunya absen";
+    // console.log("no activity");
+    // $q.notify({
+    //   message: "Tidak Ada kegiatan",
+    //   type: "negative",
+    //   position: "center",
+    //   classes: "q-px-xl",
+    // });
+  } else {
+    activityName.value = activity()?.name;
+  }
+};
 
-const attendee = ref({
-  id: inputValue.value,
-  name: "",
-  class_id: "",
-  date: today.getDate().toLocaleString(),
-  in: today.getHours() + ":" + today.getMinutes(),
-  out: "14.00",
-  status: "late",
+onMounted(() => {
+  scheduleChecker();
 });
+
+setInterval(() => {
+  scheduleChecker();
+}, 1000);
 
 const onClickSettings = () => {
   const settingsDialog = $q.dialog({
@@ -135,53 +152,8 @@ const onClickSettings = () => {
   settingsDialog.update();
 };
 
-const locationId = localStorage.getItem("location");
-
-const submit = () => {
-  const student = useStudents.getStudentByNis(inputValue.value);
-  const studentSchedule = useStudentSchedules.getStudentScheduleByNis(
-    inputValue.value
-  );
-
-  const schedule = useSchedules.getScheduleById(studentSchedule?.schedule_id);
-
-  const isStudent = student?.nis == inputValue.value;
-
-  const isRightClass = schedule?.class_id === locationId.toString();
-  attendee.value.name = student?.name;
-
-  if (isStudent) {
-    if (isRightClass == false) {
-      $q.notify({
-        message: "Kelas salah",
-        type: "negative",
-        position: "center",
-        classes: "q-px-xl",
-      });
-    } else {
-      attendee.value.name = student?.name;
-      useAttendances.addAttendance(attendee.value);
-      const dialog = $q.dialog({
-        progress: true,
-        component: AttendanceDialog,
-        componentProps: {
-          name: attendee.value.name,
-          in: attendee.value.in,
-          out: attendee.value.out,
-          status: attendee.value.status,
-        },
-      });
-      dialog.update();
-      setTimeout(() => {
-        dialog.hide();
-      }, 2000);
-    }
-    // else if () {
-
-    // }
-  } else {
-    console.log("teacher");
-  }
+const submitAttendance = () => {
+  submit(inputValue.value);
   inputValue.value = "";
 };
 </script>
@@ -189,7 +161,7 @@ const submit = () => {
 <style scoped>
 .glass {
   /* From https://css.glass */
-  background: rgba(255, 255, 255, 0.267);
+  background: rgba(0, 14, 24, 0.801);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(7.1px);

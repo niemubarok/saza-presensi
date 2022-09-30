@@ -15,7 +15,7 @@ export const getTime = () => {
     hours,
     minutes,
     seconds,
-    time: hours + ":" + minutes,
+    time: hours + ":" + minutes + ":" + seconds,
   };
 };
 
@@ -29,8 +29,17 @@ export const setTime = (h, m, s) => {
   };
 };
 
-export const compareTime = (init, now) => {
-  return getTime().hours > setTime(7, 40, 0).hours;
+export const compareTime = (init, now, comparasion) => {
+  if (comparasion == "equal") {
+    return init == now;
+  } else if (comparasion == "lt") {
+    return init < now;
+  } else if (comparasion == "gt") {
+    return init > now;
+  } else {
+    return false;
+  }
+  // return getTime().hours > setTime(now).hours;
   // return getTime().hours ;
   // return setTime(7, 40, 0).hours;
 };

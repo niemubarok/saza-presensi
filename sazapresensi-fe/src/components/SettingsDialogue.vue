@@ -32,7 +32,7 @@
       <div class="q-pa-md q-ml-sm">
         <div class="q-gutter-y-md column">
           <q-select
-            v-model="optionModels.location"
+            v-model="models.location"
             color="dark"
             :options="locationOptions"
             label="Lokasi Absen"
@@ -41,6 +41,23 @@
               <q-icon name="place" />
             </template>
           </q-select>
+          <div class="row">
+            <q-chip flat class="bg-transparent text-body">Mode List :</q-chip>
+            <q-radio
+              v-model="models.listMode"
+              checked-icon="task_alt"
+              unchecked-icon="panorama_fish_eye"
+              val="card"
+              label="Card"
+            />
+            <q-radio
+              v-model="models.listMode"
+              checked-icon="task_alt"
+              unchecked-icon="panorama_fish_eye"
+              val="table"
+              label="Table"
+            />
+          </div>
         </div>
       </div>
       <q-card-actions align="right">
@@ -63,8 +80,9 @@ const props = defineProps({
   status: String,
 });
 
-const optionModels = ref({
-  location: null,
+const models = ref({
+  location: localStorage.getItem("locationLabel") || null,
+  listMode: localStorage.getItem("listMode") || "card",
 });
 
 // const locationModel = ref();
@@ -81,11 +99,33 @@ const locationOptions = [
     label: "Kelas IX",
     id: "klsix",
   },
+  {
+    label: "Kelas X",
+    id: "klsx",
+  },
+  {
+    label: "Kelas XI",
+    id: "klsxi",
+  },
+  {
+    label: "Kelas XII",
+    id: "klsxii",
+  },
+  {
+    label: "Masjid",
+    id: "masjid",
+  },
+  {
+    label: "Asrama",
+    id: "asrama",
+  },
 ];
 
 const onSaveSettings = () => {
   // console.log(optionModels.value.location.id);
-  localStorage.setItem("location", optionModels.value.location.id);
+  localStorage.setItem("location", models.value.location?.id);
+  localStorage.setItem("locationLabel", models.value.location?.label);
+  localStorage.setItem("listMode", models.value.listMode);
   // console.log(window.location);
   window.location.reload();
   dialogRef.value.hide();

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { setTime } from "src/utilities/time";
+import { setTime } from "src/utilities/time-util";
 
 export const useClockStore = defineStore("clock", {
   state: () => ({

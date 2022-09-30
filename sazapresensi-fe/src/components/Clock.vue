@@ -12,7 +12,7 @@
 
   <script setup>
 import { onMounted, ref } from "vue";
-import { compareTime, getTime, setTime } from "src/utilities/time.js";
+import { compareTime, getTime, setTime } from "src/utilities/time-util.js";
 
 const hours = ref(0);
 const minutes = ref(0);
@@ -31,7 +31,7 @@ const timer = () => {
 };
 
 onMounted(() => {
-  console.log(compareTime());
+  // console.log(compareTime());
   timer();
 });
 </script>

@@ -66,7 +66,7 @@
                 style="margin-right: -5px"
                 class="q-ml-xs q-px-md card-border-radius bg-dark text-white"
               >
-                Masjid jami salsabiila zainia</span
+                {{ location }}</span
               >
             </q-chip>
           </div>
@@ -189,6 +189,7 @@ import AttandeeCard from "./AttandeeCard.vue";
 const useAttendance = useAttendancesStore();
 const attendances = useAttendance.attendances;
 const filter = ref("");
+const location = ref(localStorage.getItem("locationLabel"));
 
 const columns = [
   {

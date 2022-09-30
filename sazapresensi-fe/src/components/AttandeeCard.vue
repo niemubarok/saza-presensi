@@ -33,9 +33,19 @@
               class="textOverflow text-left text-weight-bold"
               >{{ props.name }}</q-item-label
             >
-            <q-item-label style="margin-left: -15px" caption class="text-left"
-              >{{ props.in }} - {{ props.out }}
-            </q-item-label>
+            <!-- <q-separator style="margin-left: -15px" /> -->
+            <q-chip
+              icon="schedule"
+              style="margin-left: -15px"
+              caption
+              class="text-left bg-transparent"
+              dense
+              size="sm"
+            >
+              <!-- <q-icon name="schedule" /> -->
+              {{ props.in }}
+              <!-- - {{ props.out }} -->
+            </q-chip>
           </q-item-section>
         </q-item>
       </q-card>
@@ -73,12 +83,12 @@ const props = defineProps({
   width: 400px;
 }
 
-/* .glass {
+.glass {
   background: rgba(255, 255, 255, 0.267);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(7.1px);
   -webkit-backdrop-filter: blur(7.1px);
   border: 1px solid rgba(255, 255, 255, 0.34);
-} */
+}
 </style>

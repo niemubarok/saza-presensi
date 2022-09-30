@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { compareTime } from "src/utilities/time-util";
 import { ref } from "vue";
 
 export const useStudentAtivitiesStore = defineStore("StudentAtivities", {
@@ -48,7 +49,7 @@ export const useStudentAtivitiesStore = defineStore("StudentAtivities", {
         id: 6,
         name: "Jamaah Ashar",
         location: "kelas",
-        start: "15:00:00",
+        start: "15:16:30",
         end: "16:00:00",
         time_order: 6,
       },
@@ -70,7 +71,7 @@ export const useStudentAtivitiesStore = defineStore("StudentAtivities", {
       },
       {
         id: 9,
-        name: "Muwajahan",
+        name: "Muwajahah",
         location: "kelas",
         start: "19:40",
         end: "21:30:00",
@@ -87,8 +88,18 @@ export const useStudentAtivitiesStore = defineStore("StudentAtivities", {
     ]),
   }),
   getters: {
-    getStudentScheduleByNis: (state) => {
-      return (nis) => state.all.find((val) => val.nis == nis);
+    getStudentActivitiesByOrder: (state) => {
+      return (order) => state.all.find((val) => val.time_order == order);
+    },
+    getActivityByTime: (state) => {
+      const activity = (now) =>
+        state.all?.find((val) => val.start <= now && val.end >= now);
+
+      if (activity == undefined) {
+        return false;
+      }
+
+      return activity;
     },
   },
   actions: {},

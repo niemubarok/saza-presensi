@@ -1,12 +1,12 @@
 <template>
   <q-card style="width: 70%" class="fixed-top-right q-mt-md q-mr-xl">
     <q-table
-      table-class="q-mt-md full-width"
+      table-class="q-mt-md full-width window-height"
       :columns="columns"
       :rows="tableRows"
       row-key="name"
       title="Daftar Hadir Kelas"
-      grid
+      virtual-scroll
     >
       <template v-slot:header="props">
         <q-tr :props="props">
@@ -27,7 +27,7 @@
           <q-td key="class" :props="props">{{ props.row.class_id }}</q-td>
           <q-td key="class" :props="props">{{ props.row.date }}</q-td>
           <q-td key="in" :props="props">{{ props.row.in }}</q-td>
-          <q-td key="out" :props="props">{{ props.row.out }}</q-td>
+          <!-- <q-td key="out" :props="props">{{ props.row.out }}</q-td> -->
           <q-td key="status" :props="props">{{ props.row.status }}</q-td>
         </q-tr>
       </template>
@@ -66,11 +66,6 @@ const columns = [
   {
     name: "in",
     label: "Jam Datang",
-    align: "center",
-  },
-  {
-    name: "out",
-    label: "Jam Pulang",
     align: "center",
   },
   {
