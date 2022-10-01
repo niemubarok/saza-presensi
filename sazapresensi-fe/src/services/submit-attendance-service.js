@@ -17,18 +17,21 @@ const useAttendances = useAttendancesStore();
 const useStudents = useStudentStore();
 
 export const submit = (input) => {
-  // console.log(useStudentAtivitiesStore().getStudentActivitiesByOrder(1));
-  const student = useStudents.getStudentByNis(input);
-  const studentSchedule = useStudentSchedules.getStudentScheduleByNis(input);
+  const successAudio = new Audio(
+    "src/assets/audio/success_notification.wav")
 
-  const schedule = useSchedules.getScheduleById(studentSchedule?.schedule_id);
-
-  const isStudent = student?.nis == input;
-  const locationId = localStorage.getItem("location");
-
-  const isRightClass = schedule?.class_id === locationId.toString();
-  const activity = () => useStudentAtivities.getActivityByTime("14:00:00");
-
+    // console.log(useStudentAtivitiesStore().getStudentActivitiesByOrder(1));
+    const student = useStudents.getStudentByNis(input);
+    const studentSchedule = useStudentSchedules.getStudentScheduleByNis(input);
+    
+    const schedule = useSchedules.getScheduleById(studentSchedule?.schedule_id);
+    
+    const isStudent = student?.nis == input;
+    const locationId = localStorage.getItem("location");
+    
+    const isRightClass = schedule?.class_id === locationId.toString();
+    const activity = () => useStudentAtivities.getActivityByTime("14:00:00");
+    
   const attendee = ref({
     id: input,
     name: "",
@@ -43,7 +46,7 @@ export const submit = (input) => {
   //cek apakah dia student
   if (isStudent) {
     //cek apakah lokasi dia absen sudah benar
-
+    
     if (isRightClass == false) {
       Notify.create({
         message: "Kelas salah",
@@ -52,6 +55,7 @@ export const submit = (input) => {
         classes: "q-px-xl",
       });
     } else {
+      successAudio.play()
       attendee.value.name = student?.name;
       attendee.value.activity = activity().name;
 
