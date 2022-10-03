@@ -13,8 +13,8 @@ export default class Student extends BaseModel {
   @column({columnName:'gender'})
   public gender:String
 
-  @column({columnName:'birthday'})
-  public birthday:Date
+  @column({columnName:'birthdate'})
+  public birthdate:Date
 
   @column({columnName:'phone_1'})
   public phone_1:Number

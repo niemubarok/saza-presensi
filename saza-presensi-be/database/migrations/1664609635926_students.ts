@@ -1,4 +1,5 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
+import {schema} from '@ioc:Adonis/Core/Validator'
 
 export default class extends BaseSchema {
   protected tableName = 'students'
@@ -10,7 +11,7 @@ export default class extends BaseSchema {
       table.string('class_id', 10).references('classes.id')
       table.string('name' ,60) 
       table.enum('gender', ['L', 'P'])
-      table.date('birthday')
+      table.date('birthdate')
       table.bigInteger('phone_1') 
       table.bigInteger('phone_2')
       table.string('photo') 
