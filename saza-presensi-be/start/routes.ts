@@ -19,7 +19,10 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import StudentsController from 'App/Controllers/Http/StudentsController'
 
 Route.get('/', async () => {
   return { hello: 'world' }
 })
+
+Route.get('/students', 'StudentsController.index')
