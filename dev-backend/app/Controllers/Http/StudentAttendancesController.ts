@@ -3,15 +3,23 @@ import Student from "App/Models/Student";
 import StudentAttendance from "App/Models/StudentAttendance";
 
 export default class StudentAttendancesController {
-  public async index({ response }: HttpContextContract) {
-    const studentAttendances = await StudentAttendance.query().preload(
-      "students"
-    );
+  public async index({ request, response }: HttpContextContract) {
+    const req = request.body().data;
+    const today = req.date.slice(0, 10);
+
+    // return today;
+
+    const studentAttendances = await StudentAttendance.query()
+      .where("date", today)
+      // .where("activity_id", req.activityId)
+      .preload("students");
     response.status(200).json({
       status: 200,
       message: "success",
       data: studentAttendances,
     });
+
+    console.log(studentAttendances);
   }
 
   public async create({ request, response }: HttpContextContract) {
@@ -63,7 +71,7 @@ export default class StudentAttendancesController {
     }
   }
 
-  public async store({ request, response }: HttpContextContract) {
+  public async store({ request }: HttpContextContract) {
     return request.body();
   }
 

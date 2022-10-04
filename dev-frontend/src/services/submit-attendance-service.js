@@ -1,13 +1,13 @@
 import { useAttendancesStore } from "src/stores/attendances-store";
 import { useStudentScheduleStore } from "src/stores/studentSchedule-store";
 import { useScheduleStore } from "src/stores/schedule-store";
-import { useSettingStore } from "src/stores/setting-store";
-import { useClockStore } from "src/stores/clock-store";
+// import { useSettingStore } from "src/stores/setting-store";
+// import { useClockStore } from "src/stores/clock-store";
 import AttendanceDialog from "src/components/AttendanceDialog.vue";
 import { useStudentStore } from "src/stores/student-store";
 import { Notify, Dialog } from "quasar";
 import { ref } from "vue";
-import { compareTime, getTime } from "src/utilities/time-util.js";
+import { getTime } from "src/utilities/time-util.js";
 import { useStudentAtivitiesStore } from "src/stores/student-activities-store";
 
 const useStudentAtivities = useStudentAtivitiesStore();
@@ -29,12 +29,13 @@ export const submit = (input) => {
   const locationId = localStorage.getItem("location");
 
   const isRightClass = schedule?.class_id === locationId.toString();
-  const activity = () => useStudentAtivities.getActivityByTime("14:00:00");
+  const activity = () => useStudentAtivities.getActivityByTime(getTime().time);
+  const activityId = localStorage.getItem("activityId");
 
   const attendee = ref({
     student_nis: input,
     class_id: locationId,
-    activity_id: localStorage.getItem("activityId"),
+    activity_id: activityId,
     date: getTime().date,
     in: getTime().time,
     status: "late",
@@ -42,11 +43,19 @@ export const submit = (input) => {
 
   //cek apakah dia student
   if (isStudent) {
+    console.log(student);
     //cek apakah lokasi dia absen sudah benar
 
     if (isRightClass == false) {
       Notify.create({
         message: "Kelas salah",
+        type: "negative",
+        position: "center",
+        classes: "q-px-xl",
+      });
+    } else if (activityId == "null") {
+      Notify.create({
+        message: "Belum waktunya absen",
         type: "negative",
         position: "center",
         classes: "q-px-xl",

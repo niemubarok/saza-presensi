@@ -1,19 +1,28 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import { getTime } from "src/utilities/time-util";
 
 export const useAttendancesStore = defineStore("attendance", {
   state: () => ({
     number: 0,
     attendances: [],
+    filtered: [],
   }),
   getters: {
-    getAttendance: (state) => {
-      return state.attendances.sort();
+    getAttendances: (state) => {
+      // return (activityId) => state.attendances;
+      return (activityId) =>
+        state.attendances.filter(
+          (val) => val.activity_id == activityId
+          // console.log(val.activity_id == activityId)
+        );
+    },
+    getFilteredAttendance: (state) => {
+      return () => state.filtered;
     },
   },
   actions: {
     addAttendance(attendee) {
-      // console.log(attendee);
       axios
         .post(process.env.API + "student/attendances/create", {
           data: attendee,
@@ -27,10 +36,23 @@ export const useAttendancesStore = defineStore("attendance", {
           }
         });
     },
-    getAttendancecFromDB() {
-      axios.get(process.env.API + "student/attendances").then((res) => {
-        res.data.data.forEach((data) => this.attendances.unshift(data));
-      });
+    async getAttendancesFromDB() {
+      await axios
+        .post(process.env.API + "student/attendances", {
+          data: {
+            date: getTime().date,
+            // activityId,
+          },
+        })
+        .then((res) => {
+          this.attendances = res.data.data;
+          // res.data.data.forEach((data) => this.attendances.unshift(data));
+        });
+    },
+    filterAttendances(activityId) {
+      this.filtered = this.attendances.filter(
+        (val) => val.activity_id == activityId
+      );
     },
   },
 });

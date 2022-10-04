@@ -1,5 +1,8 @@
 <template>
   <div class="row text-center bg-grey-1">
+    <!-- <div class="fixed-top z-top">
+      <q-chip rounded :label="date" floating="bottom" />
+    </div> -->
     <div class="column">
       <q-card
         class="bg-dark fixed-top-left text-center q-pt-md q-ma-md"
@@ -28,7 +31,6 @@
           class="bg-dark text-dark no-border no-outline"
           v-on:keyup.enter="submitAttendance"
         />
-        <Clock />
 
         <div>
           <q-skeleton
@@ -63,8 +65,20 @@
           style="width: 200px; height: 100px; margin-top: -130px"
         >
           <q-card-section>
-            <div class="text-body text-white">Absen Untuk</div>
-            <q-chip class="text-h6 text-dark">{{ activityName }}</q-chip>
+            <Clock />
+            <div class="text-body text-white">
+              <span> Absen Untuk </span>
+            </div>
+            <q-chip
+              v-if="activityName == 'null'"
+              class="bg-red text-body text-white"
+              >Belum Waktunya Absen</q-chip
+            >
+            <q-chip
+              v-else
+              class="text-subtitle2 card-border-radius text-dark"
+              >{{ activityName }}</q-chip
+            >
           </q-card-section>
         </q-card>
       </div>
@@ -88,7 +102,7 @@
 
 <script setup>
 import { useQuasar } from "quasar";
-import { onMounted, ref } from "vue";
+import { onBeforeMount, onMounted, ref, watch } from "vue";
 import { onStartTyping } from "@vueuse/core";
 import { useStudentAtivitiesStore } from "src/stores/student-activities-store";
 
@@ -99,7 +113,7 @@ import AttandeeCard from "src/components/AttandeeCard.vue";
 import SettingsDialogue from "src/components/SettingsDialogue.vue";
 
 import { submit } from "src/services/submit-attendance-service";
-import { getTime } from "src/utilities/time-util";
+import { getTime, timeToMillisecond } from "src/utilities/time-util";
 import AttendanceTable from "src/components/AttendanceTable.vue";
 import { useAttendancesStore } from "src/stores/attendances-store";
 
@@ -111,6 +125,7 @@ const input = ref(null);
 const listMode = ref(localStorage.getItem("listMode"));
 
 const today = new Date();
+const date = getTime().date;
 const useStudentAtivities = useStudentAtivitiesStore();
 const activity = () => useStudentAtivities.getActivityByTime(getTime().time);
 
@@ -124,8 +139,12 @@ onStartTyping(() => {
 });
 
 const scheduleChecker = () => {
-  if (activity() == undefined) {
-    activityName.value = "Belum waktunya absen";
+  // console.log(activity() == undefined);
+  if (activity() != undefined) {
+    activityName.value = activity()?.name;
+    localStorage.setItem("activityId", activity().id);
+    studentAttendances.filterAttendances(activity()?.id);
+  } else {
     // console.log("no activity");
     // $q.notify({
     //   message: "Tidak Ada kegiatan",
@@ -133,16 +152,14 @@ const scheduleChecker = () => {
     //   position: "center",
     //   classes: "q-px-xl",
     // });
-  } else {
-    activityName.value = activity()?.name;
-    localStorage.setItem("activityId", activity().id);
+    localStorage.setItem("activityId", null);
+    activityName.value = "null";
   }
 };
 
 onMounted(() => {
-  console.log(activity()?.id);
   scheduleChecker();
-  studentAttendances.getAttendancecFromDB();
+  studentAttendances.getAttendancesFromDB();
 });
 
 setInterval(() => {

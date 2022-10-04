@@ -1,17 +1,18 @@
 <template>
-  <div>
-    <p style="margin-bottom: -50px" class="text-white">{{ date }}</p>
-    <h4 class="text-weight-bolder text-yellow-10">
-      {{ hours }}<span class="text-grey">:</span>{{ minutes
-      }}<span class="text-grey">:</span>{{ seconds }}
-    </h4>
+  <div style="margin-top: -30px">
+    <q-chip icon="schedule">
+      <h6 class="text-weight-bolder text-red">
+        {{ hours }}<span class="text-grey">:</span>{{ minutes
+        }}<span class="text-grey">:</span>{{ seconds }}
+      </h6>
+    </q-chip>
 
     <!-- {{ dateTime() }} -->
   </div>
 </template>
 
   <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, onBeforeUnmount, ref } from "vue";
 import { compareTime, getTime, setTime } from "src/utilities/time-util.js";
 
 const hours = ref(0);
@@ -26,12 +27,9 @@ const setClock = () => {
   seconds.value = getTime().seconds;
 };
 
-const timer = () => {
-  setInterval(() => setClock(), 1000);
-};
+setInterval(() => setClock(), 1000);
 
-onMounted(() => {
-  // console.log(compareTime());
-  timer();
+onBeforeUnmount(() => {
+  clearInterval();
 });
 </script>

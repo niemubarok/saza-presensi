@@ -7,7 +7,7 @@ Route.get("/", async () => {
 Route.group(() => {
   Route.get("/all", "StudentsController.index");
   Route.get("/activities", "StudentActivitiesController.index");
-  Route.get("/attendances", "StudentAttendancesController.index");
+  Route.post("/attendances", "StudentAttendancesController.index");
   Route.post("/attendances/create", "StudentAttendancesController.create");
   Route.get("/classes", "ClassesController.index");
 }).prefix("/student");

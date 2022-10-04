@@ -3,7 +3,7 @@
     <q-table
       binary-sort
       title="DAFTAR HADIR SANTRI"
-      :rows="tableRows"
+      :rows="tableRows()"
       :columns="columns"
       row-key="name"
       :filter="filter"
@@ -45,7 +45,7 @@
         </div>
         <!-- </q-banner> -->
       </template>
-      <template v-slot:top-right="props">
+      <template v-slot:top-right>
         <!-- <q-input
           borderless
           dense
@@ -58,9 +58,9 @@
             <q-icon name="search" />
           </template>
         </q-input> -->
-        <div class="column">
-          <div>
-            <q-chip outline size="md" class="card-border-radius text-dark">
+        <!-- <div class="column"> -->
+        <!-- <div>
+            <q-chip outline size="sm" class="card-border-radius text-dark">
               <span> Lokasi: </span>
               <span
                 style="margin-right: -5px"
@@ -69,16 +69,31 @@
                 {{ location }}</span
               >
             </q-chip>
-          </div>
-        </div>
+          </div> -->
+        <!-- </div> -->
 
-        <div class="column q-px-md">
+        <div class="row q-px-md">
           <q-chip
-            flat
-            size="xs"
-            dense
-            class="card-border-radius text-dark q-pa-sm"
-            >halaman : {{ props.pagination.page }}
+            outline
+            icon="today"
+            size="sm"
+            :label="date"
+            floating="bottom"
+            class="card-border-radius"
+          />
+          <q-chip
+            icon="place"
+            outline
+            size="sm"
+            class="card-border-radius text-dark"
+          >
+            <!-- <span> Lokasi: </span> -->
+            <span
+              style="margin-right: -5px"
+              class="q-ml-xs q-px-md card-border-radius bg-dark text-white"
+            >
+              {{ location }}</span
+            >
           </q-chip>
         </div>
       </template>
@@ -163,7 +178,7 @@
               >
             </q-btn>
           </div>
-          <!-- <div class="column q-px-md">
+          <div class="column q-px-md">
             <q-chip
               outline
               size="xs"
@@ -171,7 +186,7 @@
               class="card-border-radius text-dark q-pa-sm"
               >halaman : {{ scope.pagination.page }}</q-chip
             >
-          </div> -->
+          </div>
         </div>
       </template>
     </q-table>
@@ -180,16 +195,18 @@
 
 <script setup>
 import { useAttendancesStore } from "src/stores/attendances-store";
-import { onMounted, ref } from "vue";
+import { onBeforeMount, onMounted, ref, watch } from "vue";
 import { fasChevronLeft, fasChevronRight } from "@quasar/extras/fontawesome-v6";
 import AttandeeCard from "./AttandeeCard.vue";
+import { getTime } from "src/utilities/time-util";
 
 // import { fab } from "@quasar/extras/fontawesome-v6";
-
+const activityId = ref("");
 const useAttendance = useAttendancesStore();
 const attendances = useAttendance.attendances;
 const filter = ref("");
 const location = ref(localStorage.getItem("locationLabel"));
+const date = getTime().date.toLocaleDateString();
 
 const columns = [
   {
@@ -229,12 +246,15 @@ const columns = [
   },
 ];
 
-const tableRows = ref([]);
+const tableRows = () => useAttendance.getFilteredAttendance();
 
+// watch(
+//   activityId,
+//   () => (tableRows.value = useAttendance.getAttendance(activityId.value))
+// );
 onMounted(() => {
-  // console.log(useAttendance.getAttendance);
-  tableRows.value = useAttendance.getAttendance;
-  // useAttendance.addAttendance();
+  activityId.value = localStorage.getItem("activityId");
+  // useAttendance.filterAttendances(activityId.value);
 });
 </script>
 

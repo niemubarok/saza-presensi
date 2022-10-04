@@ -6,7 +6,7 @@ export const zeroPad = (n) => {
 
 export const getTime = () => {
   const currentDate = new Date();
-  const date = currentDate.toLocaleDateString();
+  const date = currentDate;
   const hours = zeroPad(currentDate.getHours());
   const minutes = zeroPad(currentDate.getMinutes());
   const seconds = zeroPad(currentDate.getSeconds());
@@ -42,4 +42,17 @@ export const compareTime = (init, now, comparasion) => {
   // return getTime().hours > setTime(now).hours;
   // return getTime().hours ;
   // return setTime(7, 40, 0).hours;
+};
+
+export const timeToMillisecond = (t) => {
+  // return (
+  //   Number(t.split(":")[0]) * 60 * 60 + Number(t.split(":")[1]) * 60 * 1000
+  // );
+  if (t) {
+    return (
+      Number(t.split(":")[0]) * 3600000 +
+      Number(t.split(":")[1]) * 60000 +
+      Number(t.split(":")[2]) * 1000
+    );
+  }
 };
