@@ -62,7 +62,7 @@ export const submit = async (input) => {
     } else {
       successAudio.play();
       attendee.value.name = student?.name;
-      attendee.value.activity = activity().name;
+      attendee.value.activity = activity()?.name;
 
       useAttendances.addAttendance(attendee.value);
       const dialog = Dialog.create({

@@ -50,15 +50,15 @@ export const useStudentAtivitiesStore = defineStore("StudentAtivities", {
         name: "Jamaah Ashar",
         location_id: "kelas",
         start: "15:16:30",
-        end: "18:00:00",
+        end: "17:12:00",
         time_order: 6,
       },
       {
         id: 7,
         name: "Jamaah Maghrib",
         location_id: "kelas",
-        start: "17:30",
-        end: "19:20:00",
+        start: "18:01:00",
+        end: "18:14:00",
         time_order: 7,
       },
       {

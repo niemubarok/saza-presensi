@@ -81,8 +81,10 @@ const props = defineProps({
 });
 
 const models = ref({
-  location: localStorage.getItem("locationLabel") || null,
-  listMode: localStorage.getItem("listMode") || "card",
+  location: !localStorage.getItem("locationLabel")
+    ? null
+    : localStorage.getItem("locationLabel"),
+  listMode: !localStorage.getItem("listMode") ? "card" : "table",
 });
 
 // const locationModel = ref();

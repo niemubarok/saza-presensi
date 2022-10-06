@@ -22,8 +22,8 @@ export const useAttendancesStore = defineStore("attendance", {
     },
   },
   actions: {
-    addAttendance(attendee) {
-      axios
+    async addAttendance(attendee) {
+      await axios
         .post(process.env.API + "student/attendances/create", {
           data: attendee,
         })
@@ -36,8 +36,9 @@ export const useAttendancesStore = defineStore("attendance", {
           }
         });
     },
-    async getAttendancesFromDB() {
-      await axios
+    getAttendancesFromDB() {
+      console.log("executed");
+      axios
         .post(process.env.API + "student/attendances", {
           data: {
             date: getTime().date,

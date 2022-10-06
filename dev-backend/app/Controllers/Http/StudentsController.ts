@@ -14,10 +14,6 @@ export default class StudentsController {
 
   public async show({ request, response }: HttpContextContract) {
     const req = request.body();
-    //     console.log(req);
-    // //
-    //     response.json(req.nis);
-
     const student = await Student.findBy("nis", req.nis);
 
     response.status(200).json({

@@ -5,8 +5,8 @@
     </div> -->
     <div class="column">
       <q-card
-        class="bg-dark fixed-top-left text-center q-pt-md q-ma-md"
-        style="width: 200px; height: 400px"
+        class="bg-dark fixed-top-left text-center q-py-md q-ma-md"
+        style="width: 200px"
       >
         <q-img
           width="150px"
@@ -84,8 +84,8 @@
       </div>
     </div>
     <div class="column">
-      <AttendanceCardList v-if="listMode == 'card'" />
-      <AttendanceTable v-else />
+      <AttendanceTable v-if="listMode == 'table'" />
+      <AttendanceCardList v-else />
     </div>
   </div>
   <div class="row q-pa-md fixed-bottom" style="width: 400px">
@@ -138,26 +138,36 @@ onStartTyping(() => {
   }
 });
 
+const reloaded = ref(false);
+
 const scheduleChecker = () => {
   // console.log(activity() == undefined);
-  if (activity() != undefined) {
+  const now = getTime().time;
+
+  // console.log(activity()?.end >= now);
+  if (activity()?.start == now) {
+    console.log("true");
     activityName.value = activity()?.name;
-    localStorage.setItem("activityId", activity().id);
+    localStorage.setItem("activityId", activity()?.id);
+    localStorage.setItem("activityName", activity()?.name);
     studentAttendances.filterAttendances(activity()?.id);
-  } else {
-    // console.log("no activity");
-    // $q.notify({
-    //   message: "Tidak Ada kegiatan",
-    //   type: "negative",
-    //   position: "center",
-    //   classes: "q-px-xl",
-    // });
+    // window.location.reload();
+  } else if (activity()?.end == now) {
     localStorage.setItem("activityId", null);
+    localStorage.setItem("activityName", null);
     activityName.value = "null";
+    // window.location.reload();
+  } else {
+    localStorage.getItem("activityId");
+    activityName.value = localStorage.getItem("activityName");
+    studentAttendances.filterAttendances(activity()?.id);
   }
 };
 
 onMounted(() => {
+  if (!localStorage.getItem("location")) {
+    onClickSettings();
+  }
   scheduleChecker();
   studentAttendances.getAttendancesFromDB();
 });

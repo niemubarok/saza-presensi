@@ -98,6 +98,17 @@
         </div>
       </template>
 
+      <template v-slot:no-data>
+        <div class="full-width row flex-center text-grey q-gutter-sm">
+          <q-card class="my-card">
+            <img src="https://cdn.quasar.dev/img/mountains.jpg" />
+            <q-card-section>
+              <div class="text-h6">Belum ada Santri absen</div>
+            </q-card-section>
+          </q-card>
+        </div>
+      </template>
+
       <template v-slot:item="props">
         <AttandeeCard
           :name="props.row.students.name"
@@ -247,15 +258,6 @@ const columns = [
 ];
 
 const tableRows = () => useAttendance.getFilteredAttendance();
-
-// watch(
-//   activityId,
-//   () => (tableRows.value = useAttendance.getAttendance(activityId.value))
-// );
-onMounted(() => {
-  activityId.value = localStorage.getItem("activityId");
-  // useAttendance.filterAttendances(activityId.value);
-});
 </script>
 
 <style>
