@@ -16,19 +16,19 @@ const useSchedules = useScheduleStore();
 const useAttendances = useAttendancesStore();
 const useStudents = useStudentStore();
 
-export const submit = (input) => {
+export const submit = async (input) => {
   const successAudio = new Audio("src/assets/audio/success_notification.wav");
 
-  // console.log(useStudentAtivitiesStore().getStudentActivitiesByOrder(1));
-  const student = useStudents.getStudentByNis(input);
-  const studentSchedule = useStudentSchedules.getStudentScheduleByNis(input);
+  await useStudents.getStudentByNisFromDB(input);
+  const student = useStudents.getStudentByNis();
+  // const isStudent = student?.nis == input;
 
+  const studentSchedule = useStudentSchedules.getStudentScheduleByNis(input);
   const schedule = useSchedules.getScheduleById(studentSchedule?.schedule_id);
 
-  const isStudent = student?.nis == input;
   const locationId = localStorage.getItem("location");
-
   const isRightClass = schedule?.class_id === locationId.toString();
+
   const activity = () => useStudentAtivities.getActivityByTime(getTime().time);
   const activityId = localStorage.getItem("activityId");
 
@@ -42,8 +42,7 @@ export const submit = (input) => {
   });
 
   //cek apakah dia student
-  if (isStudent) {
-    console.log(student);
+  if (student) {
     //cek apakah lokasi dia absen sudah benar
 
     if (isRightClass == false) {

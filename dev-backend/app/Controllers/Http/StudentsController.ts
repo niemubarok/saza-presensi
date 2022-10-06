@@ -1,18 +1,31 @@
-import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Student from 'App/Models/Student'
+import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import Student from "App/Models/Student";
 
 export default class StudentsController {
   public async index({}: HttpContextContract) {
-    const students = await Student.all()
+    const students = await Student.all();
 
-    return students
+    return students;
   }
 
   public async create({}: HttpContextContract) {}
 
   public async store({}: HttpContextContract) {}
 
-  public async show({}: HttpContextContract) {}
+  public async show({ request, response }: HttpContextContract) {
+    const req = request.body();
+    //     console.log(req);
+    // //
+    //     response.json(req.nis);
+
+    const student = await Student.findBy("nis", req.nis);
+
+    response.status(200).json({
+      status: 200,
+      message: "success",
+      data: student,
+    });
+  }
 
   public async edit({}: HttpContextContract) {}
 

@@ -5,6 +5,7 @@ Route.get("/", async () => {
 });
 
 Route.group(() => {
+  Route.post("/", "StudentsController.show");
   Route.get("/all", "StudentsController.index");
   Route.get("/activities", "StudentActivitiesController.index");
   Route.post("/attendances", "StudentAttendancesController.index");

@@ -26,7 +26,7 @@ export const useStudentAtivitiesStore = defineStore("StudentAtivities", {
         name: "Sekolah Pagi",
         location: "kelas",
         start: "09:24:00",
-        end: "10:44:00",
+        end: "12:10:00",
         time_order: 3,
       },
       {
