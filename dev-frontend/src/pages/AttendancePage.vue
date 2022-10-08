@@ -83,7 +83,7 @@
         </q-card>
       </div>
     </div>
-    <div class="column">
+    <div v-if="isPresenceTime" class="column">
       <AttendanceTable v-if="listMode == 'table'" />
       <AttendanceCardList v-else />
     </div>
@@ -104,17 +104,18 @@
 import { useQuasar } from "quasar";
 import { onBeforeMount, onMounted, ref, watch } from "vue";
 import { onStartTyping } from "@vueuse/core";
-import { useStudentAtivitiesStore } from "src/stores/student-activities-store";
+import { submit } from "src/services/submit-attendance-service";
 
 //components
 import Clock from "src/components/Clock.vue";
 import AttendanceCardList from "src/components/AttendanceCardList.vue";
 import AttandeeCard from "src/components/AttandeeCard.vue";
 import SettingsDialogue from "src/components/SettingsDialogue.vue";
-
-import { submit } from "src/services/submit-attendance-service";
-import { getTime, timeToMillisecond } from "src/utilities/time-util";
 import AttendanceTable from "src/components/AttendanceTable.vue";
+
+//stores
+import { useStudentAtivitiesStore } from "src/stores/student-activities-store";
+import { getTime, timeToMillisecond } from "src/utilities/time-util";
 import { useAttendancesStore } from "src/stores/attendances-store";
 
 const $q = useQuasar();
@@ -126,6 +127,8 @@ const listMode = ref(localStorage.getItem("listMode"));
 
 const today = new Date();
 const date = getTime().date;
+const now = ref("");
+
 const useStudentAtivities = useStudentAtivitiesStore();
 const activity = () => useStudentAtivities.getActivityByTime(getTime().time);
 
@@ -138,25 +141,36 @@ onStartTyping(() => {
   }
 });
 
-const reloaded = ref(false);
+const isPresenceTime = ref(false);
+
+const presenceTimeStart = () => {
+  activityName.value = activity()?.name;
+  localStorage.setItem("activityId", activity()?.id);
+  localStorage.setItem("activityName", activity()?.name);
+  studentAttendances.filterAttendances(activity()?.id);
+  isPresenceTime.value = true;
+};
+
+const presenceTimeEnd = () => {
+  localStorage.setItem("activityId", null);
+  localStorage.setItem("activityName", null);
+  activityName.value = "null";
+  isPresenceTime.value = false;
+};
+
+const checkScheduleOnMounted = () => {
+  if (activity() != undefined) {
+    presenceTimeStart();
+  } else {
+    presenceTimeEnd();
+  }
+};
 
 const scheduleChecker = () => {
-  // console.log(activity() == undefined);
-  const now = getTime().time;
-
-  // console.log(activity()?.end >= now);
-  if (activity()?.start == now) {
-    console.log("true");
-    activityName.value = activity()?.name;
-    localStorage.setItem("activityId", activity()?.id);
-    localStorage.setItem("activityName", activity()?.name);
-    studentAttendances.filterAttendances(activity()?.id);
-    // window.location.reload();
-  } else if (activity()?.end == now) {
-    localStorage.setItem("activityId", null);
-    localStorage.setItem("activityName", null);
-    activityName.value = "null";
-    // window.location.reload();
+  if (activity()?.start == now.value) {
+    presenceTimeStart();
+  } else if (activity()?.end == now.value) {
+    presenceTimeEnd();
   } else {
     localStorage.getItem("activityId");
     activityName.value = localStorage.getItem("activityName");
@@ -168,11 +182,13 @@ onMounted(() => {
   if (!localStorage.getItem("location")) {
     onClickSettings();
   }
-  scheduleChecker();
+  // scheduleChecker();
+  checkScheduleOnMounted();
   studentAttendances.getAttendancesFromDB();
 });
 
 setInterval(() => {
+  now.value = getTime().time;
   scheduleChecker();
 }, 1000);
 

@@ -13,3 +13,7 @@ Route.group(() => {
   Route.get("/all", "SettingsController.index");
   Route.patch("/update", "SettingsController.index");
 }).prefix("/settings");
+
+Route.group(() => {
+  Route.post("/send/notif/presensi", "WhatsappsController.index");
+}).prefix("/wa");

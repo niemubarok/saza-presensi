@@ -6,10 +6,11 @@ export default class extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.integer("id").primary();
-      table.string("name");
-      table.string("start");
-      table.string("end");
-      table.integer("order");
+      table.string("name", 60);
+      table.string("day", 15);
+      table.string("start", 8);
+      table.string("end", 8);
+      table.integer("order", 1);
     });
   }
 

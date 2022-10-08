@@ -37,7 +37,7 @@ export const useAttendancesStore = defineStore("attendance", {
         });
     },
     getAttendancesFromDB() {
-      console.log("executed");
+      console.log("attendance Store");
       axios
         .post(process.env.API + "student/attendances", {
           data: {

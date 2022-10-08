@@ -8,6 +8,12 @@ export default class StudentActivity extends BaseModel {
   public name: String;
 
   @column()
+  public day: String;
+
+  @column()
+  public except: String;
+
+  @column()
   public start: String;
 
   @column()
