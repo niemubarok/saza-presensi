@@ -1,12 +1,29 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import StudentActivity from "App/Models/StudentActivity";
 
-export default class StudentActitiesController {
-  public async index({ response }: HttpContextContract) {
-    const activities = await StudentActivity.all();
+export default class StudentActivitiesController {
+  public async index({ request, response }: HttpContextContract) {
+    const req = request.body()
+    // console.log(req.day);
+    const activityByDay = await StudentActivity.query().where('day', req.day)
+    
+    if(req.day){
+      response.status(200).json({
+        status:200,
+        message:"success",
+        data:activityByDay
+      });
+      
+    }else{
+      const activities = await StudentActivity.all();
+      response.status(200).json({
+        status:200,
+        message:"success",
+        data:activities
+      });
 
-    response.json(activities);
-    response.status(200);
+    }
+
   }
 
   public async create({}: HttpContextContract) {}

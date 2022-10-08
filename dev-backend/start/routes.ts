@@ -3,7 +3,8 @@ import Route from "@ioc:Adonis/Core/Route";
 Route.group(() => {
   Route.post("/", "StudentsController.show");
   Route.get("/all", "StudentsController.index");
-  Route.get("/activities", "StudentActivitiesController.index");
+  Route.get("/activities/all", "StudentActivitiesController.index");
+  Route.post("/activities/day", "StudentActivitiesController.index");
   Route.post("/attendances", "StudentAttendancesController.index");
   Route.post("/attendances/create", "StudentAttendancesController.create");
   Route.get("/classes", "ClassesController.index");

@@ -8,9 +8,9 @@ import { useStudentStore } from "src/stores/student-store";
 import { Notify, Dialog } from "quasar";
 import { ref } from "vue";
 import { getTime } from "src/utilities/time-util.js";
-import { useStudentAtivitiesStore } from "src/stores/student-activities-store";
+import { useStudentActivitiesStore } from "src/stores/student-activities-store";
 
-const useStudentAtivities = useStudentAtivitiesStore();
+const useStudentAtivities = useStudentActivitiesStore();
 const useStudentSchedules = useStudentScheduleStore();
 const useSchedules = useScheduleStore();
 const useAttendances = useAttendancesStore();

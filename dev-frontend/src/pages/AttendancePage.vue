@@ -114,8 +114,12 @@ import SettingsDialogue from "src/components/SettingsDialogue.vue";
 import AttendanceTable from "src/components/AttendanceTable.vue";
 
 //stores
-import { useStudentAtivitiesStore } from "src/stores/student-activities-store";
-import { getTime, timeToMillisecond } from "src/utilities/time-util";
+import { useStudentActivitiesStore } from "src/stores/student-activities-store";
+import {
+  getTime,
+  getDayName,
+  timeToMillisecond,
+} from "src/utilities/time-util";
 import { useAttendancesStore } from "src/stores/attendances-store";
 
 const $q = useQuasar();
@@ -129,10 +133,12 @@ const today = new Date();
 const date = getTime().date;
 const now = ref("");
 
-const useStudentAtivities = useStudentAtivitiesStore();
-const activity = () => useStudentAtivities.getActivityByTime(getTime().time);
+const useStudentActivities = useStudentActivitiesStore();
+const studentActivityByDay = () =>
+  useStudentActivities.getActivitiesByDayFromDB(getDayName(getTime().date));
+const activity = ref(null);
 
-const activityName = ref();
+const activityName = ref("");
 const studentAttendances = useAttendancesStore();
 
 onStartTyping(() => {
@@ -144,10 +150,10 @@ onStartTyping(() => {
 const isPresenceTime = ref(false);
 
 const presenceTimeStart = () => {
-  activityName.value = activity()?.name;
-  localStorage.setItem("activityId", activity()?.id);
-  localStorage.setItem("activityName", activity()?.name);
-  studentAttendances.filterAttendances(activity()?.id);
+  activityName.value = activity.value?.name;
+  localStorage.setItem("activityId", activity.value?.id);
+  localStorage.setItem("activityName", activity.value?.name);
+  studentAttendances.filterAttendances(activity.value?.id);
   isPresenceTime.value = true;
 };
 
@@ -158,8 +164,8 @@ const presenceTimeEnd = () => {
   isPresenceTime.value = false;
 };
 
-const checkScheduleOnMounted = () => {
-  if (activity() != undefined) {
+const checkScheduleOnMounted = async () => {
+  if (activity.value != undefined) {
     presenceTimeStart();
   } else {
     presenceTimeEnd();
@@ -167,18 +173,26 @@ const checkScheduleOnMounted = () => {
 };
 
 const scheduleChecker = () => {
-  if (activity()?.start == now.value) {
+  if (now.value == "00:00:00") {
+    studentActivityByDay();
+  }
+
+  if (activity.value?.start == now.value) {
     presenceTimeStart();
-  } else if (activity()?.end == now.value) {
+  } else if (activity.value?.end == now.value) {
     presenceTimeEnd();
   } else {
     localStorage.getItem("activityId");
     activityName.value = localStorage.getItem("activityName");
-    studentAttendances.filterAttendances(activity()?.id);
+    studentAttendances.filterAttendances(activity.value?.id);
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
+  await studentActivityByDay();
+  activity.value = useStudentActivities.getActivitiesTodayByTime(
+    getTime().time
+  );
   if (!localStorage.getItem("location")) {
     onClickSettings();
   }
@@ -189,6 +203,10 @@ onMounted(() => {
 
 setInterval(() => {
   now.value = getTime().time;
+  // console.log(activity.value);
+  activity.value = useStudentActivities.getActivitiesTodayByTime(
+    getTime().time
+  );
   scheduleChecker();
 }, 1000);
 

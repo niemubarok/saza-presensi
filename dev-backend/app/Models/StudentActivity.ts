@@ -1,5 +1,5 @@
 import { BaseModel, column } from "@ioc:Adonis/Lucid/Orm";
-
+ 
 export default class StudentActivity extends BaseModel {
   @column({ isPrimary: true })
   public id: Number;
@@ -10,8 +10,8 @@ export default class StudentActivity extends BaseModel {
   @column()
   public day: String;
 
-  @column()
-  public except: String;
+  // @column()
+  // public except: String;
 
   @column()
   public start: String;
