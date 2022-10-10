@@ -69,9 +69,7 @@
             <div class="text-body text-white">
               <span> Absen Untuk </span>
             </div>
-            <q-chip
-              v-if="activityName == 'null'"
-              class="bg-red text-body text-white"
+            <q-chip v-if="!isPresenceTime" class="bg-red text-body text-white"
               >Belum Waktunya Absen</q-chip
             >
             <q-chip
@@ -122,12 +120,16 @@ import {
 } from "src/utilities/time-util";
 import { useAttendancesStore } from "src/stores/attendances-store";
 
+import ls from "localstorage-slim";
+
+ls.config.encrypt = true;
+
 const $q = useQuasar();
 
 const inputValue = ref("");
 const input = ref(null);
 
-const listMode = ref(localStorage.getItem("listMode"));
+const listMode = ref(ls.get("listMode"));
 
 const today = new Date();
 const date = getTime().date;
@@ -151,16 +153,17 @@ const isPresenceTime = ref(false);
 
 const presenceTimeStart = () => {
   activityName.value = activity.value?.name;
-  localStorage.setItem("activityId", activity.value?.id);
-  localStorage.setItem("activityName", activity.value?.name);
+  ls.set("activityId", activity.value?.id);
+
+  ls.set("activityName", activity.value?.name);
   studentAttendances.filterAttendances(activity.value?.id);
   isPresenceTime.value = true;
 };
 
 const presenceTimeEnd = () => {
-  localStorage.setItem("activityId", null);
-  localStorage.setItem("activityName", null);
-  activityName.value = "null";
+  // ls.set("activityId", null);
+  // ls.set("activityName", null);
+  // activityName.value = "null";
   isPresenceTime.value = false;
 };
 
@@ -174,7 +177,7 @@ const checkScheduleOnMounted = async () => {
 
 const scheduleChecker = () => {
   if (now.value == "00:00:00") {
-    studentActivityByDay();
+    window.location.reload();
   }
 
   if (activity.value?.start == now.value) {
@@ -182,18 +185,19 @@ const scheduleChecker = () => {
   } else if (activity.value?.end == now.value) {
     presenceTimeEnd();
   } else {
-    localStorage.getItem("activityId");
-    activityName.value = localStorage.getItem("activityName");
+    ls.get("activityId");
+    activityName.value = ls.get("activityName");
     studentAttendances.filterAttendances(activity.value?.id);
   }
 };
 
 onMounted(async () => {
+  // console.log(ls.get("tesLS"));
   await studentActivityByDay();
   activity.value = useStudentActivities.getActivitiesTodayByTime(
     getTime().time
   );
-  if (!localStorage.getItem("location")) {
+  if (!ls.get("location")) {
     onClickSettings();
   }
   // scheduleChecker();

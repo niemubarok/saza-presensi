@@ -216,7 +216,7 @@ const activityId = ref("");
 const useAttendance = useAttendancesStore();
 const attendances = useAttendance.attendances;
 const filter = ref("");
-const location = ref(localStorage.getItem("locationLabel"));
+const location = ref(ls.get("locationLabel"));
 const date = getTime().date.toLocaleDateString();
 
 const columns = [

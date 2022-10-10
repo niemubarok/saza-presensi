@@ -1,8 +1,8 @@
 {
   "name": "sazapresensi-fe",
   "version": "0.0.1",
-  "description": "A Quasar Project",
-  "productName": "Quasar App",
+  "description": "aplikasi untuk absensi santri dan guru di pesantren salsabiila zainia",
+  "productName": "sazapresensi",
   "author": "Husni Mubarok <niemubarok@gmail.com>",
   "private": true,
   "scripts": {
@@ -14,6 +14,7 @@
     "@quasar/extras": "^1.0.0",
     "@vueuse/core": "^9.2.0",
     "axios": "^0.21.1",
+    "localstorage-slim": "^2.3.0",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",
     "vue": "^3.0.0",

@@ -72,6 +72,9 @@
 import { useDialogPluginComponent } from "quasar";
 import SuccessCheckMark from "./SuccessCheckMark.vue";
 import { ref } from "vue";
+import ls from "localstorage-slim";
+
+ls.config.encrypt = true;
 
 const props = defineProps({
   name: String,
@@ -81,10 +84,8 @@ const props = defineProps({
 });
 
 const models = ref({
-  location: !localStorage.getItem("locationLabel")
-    ? null
-    : localStorage.getItem("locationLabel"),
-  listMode: !localStorage.getItem("listMode") ? "card" : "table",
+  location: !ls.get("locationLabel") ? null : ls.get("locationLabel"),
+  listMode: !ls.get("listMode") ? "card" : "table",
 });
 
 // const locationModel = ref();
@@ -125,9 +126,9 @@ const locationOptions = [
 
 const onSaveSettings = () => {
   // console.log(optionModels.value.location.id);
-  localStorage.setItem("location", models.value.location?.id);
-  localStorage.setItem("locationLabel", models.value.location?.label);
-  localStorage.setItem("listMode", models.value.listMode);
+  ls.set("location", models.value.location?.id);
+  ls.set("locationLabel", models.value.location?.label);
+  ls.set("listMode", models.value.listMode);
   // console.log(window.location);
   window.location.reload();
   dialogRef.value.hide();

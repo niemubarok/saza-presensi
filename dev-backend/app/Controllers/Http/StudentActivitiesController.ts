@@ -1,10 +1,15 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import StudentActivity from "App/Models/StudentActivity";
+import { getTime } from "App/Utils/TimeUtil";
 
 export default class StudentActivitiesController {
   public async index({ request, response }: HttpContextContract) {
     const req = request.body()
     // console.log(req.day);
+
+    console.log(getTime().time);
+    
+
     const activityByDay = await StudentActivity.query().where('day', req.day)
     
     if(req.day){

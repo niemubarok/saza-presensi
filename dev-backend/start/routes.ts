@@ -16,5 +16,5 @@ Route.group(() => {
 }).prefix("/settings");
 
 Route.group(() => {
-  Route.post("/send/notif/presensi", "WhatsappsController.index");
+  // Route.get("/send/notif/presensi", "WhatsappsController.index");
 }).prefix("/wa");
