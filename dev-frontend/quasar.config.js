@@ -46,6 +46,7 @@ module.exports = configure(function (/* ctx */) {
 
       env: {
         API: "http://localhost:3333/",
+        WA_GATEWAY: "http://localhost:8000",
       },
 
       vueRouterMode: "hash", // available values: 'hash', 'history'

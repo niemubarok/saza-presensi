@@ -10,6 +10,8 @@ import { ref } from "vue";
 import { getTime } from "src/utilities/time-util.js";
 import { useStudentActivitiesStore } from "src/stores/student-activities-store";
 
+import { sendMessage } from "./whatsapp-service";
+
 const useStudentAtivities = useStudentActivitiesStore();
 const useStudentSchedules = useStudentScheduleStore();
 const useSchedules = useScheduleStore();
@@ -21,6 +23,7 @@ export const submit = async (input) => {
 
   await useStudents.getStudentByNisFromDB(input);
   const student = useStudents.getStudentByNis();
+  console.log(student);
   // const isStudent = student?.nis == input;
 
   const studentSchedule = useStudentSchedules.getStudentScheduleByNis(input);
@@ -63,6 +66,8 @@ export const submit = async (input) => {
       successAudio.play();
       attendee.value.name = student?.name;
       attendee.value.activity = activity()?.name;
+
+      // sendMessage(student.)
 
       useAttendances.addAttendance(attendee.value);
       const dialog = Dialog.create({

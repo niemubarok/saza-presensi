@@ -10,8 +10,16 @@ const routes = [
       },
       {
         path: "/anjungan",
-        name: 'anjungan',
+        name: "anjungan",
         component: () => import("src/pages/AttendancePage.vue"),
+        meta: {
+          isSidebar: false,
+        },
+      },
+      {
+        path: "/wa",
+        name: "whatsapp",
+        component: () => import("src/pages/WhatsappPage.vue"),
         meta: {
           isSidebar: false,
         },
