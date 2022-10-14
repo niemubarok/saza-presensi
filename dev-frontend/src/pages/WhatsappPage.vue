@@ -1,5 +1,5 @@
 <template>
-  <div v-if="qr" style="width: 200px; height: 200px">
+  <div style="width: 200px; height: 200px">
     <q-img :src="qr" spinner-color="primary" spinner-size="82px" />
   </div>
 
@@ -30,20 +30,17 @@ const onClickSendMessage = () => {
   sendMessage(number.value, message.value);
 };
 
-// const io = SocketIoService;
-// const connect = () => {
-//   socket.on("message", (msg) => {
-//     console.log(msg);
-//   });
-//   socket.on("qr", (src) => {
-//     qr.value = src;
-//   });
-// };
+const socket = io(process.env.WA_GATEWAY);
+const connect = () => {
+  socket.on("message", (msg) => {
+    console.log(msg);
+  });
+  socket.on("qr", (src) => {
+    qr.value = src;
+  });
+};
 
 onMounted(() => {
-  // console.log(process.env.WA_GATEWAY);
-  // logconnect();
-  // console.log(getQR());
-  // SocketIoService.connect();
+  connect();
 });
 </script>

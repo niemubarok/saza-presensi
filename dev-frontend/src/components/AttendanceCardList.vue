@@ -210,6 +210,7 @@ import { onBeforeMount, onMounted, ref, watch } from "vue";
 import { fasChevronLeft, fasChevronRight } from "@quasar/extras/fontawesome-v6";
 import AttandeeCard from "./AttandeeCard.vue";
 import { getTime } from "src/utilities/time-util";
+import ls from "localstorage-slim";
 
 // import { fab } from "@quasar/extras/fontawesome-v6";
 const activityId = ref("");

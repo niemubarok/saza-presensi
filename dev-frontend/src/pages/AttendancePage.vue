@@ -161,9 +161,6 @@ const presenceTimeStart = () => {
 };
 
 const presenceTimeEnd = () => {
-  // ls.set("activityId", null);
-  // ls.set("activityName", null);
-  // activityName.value = "null";
   isPresenceTime.value = false;
 };
 
@@ -219,6 +216,8 @@ onMounted(async () => {
   activity.value = useStudentActivities.getActivitiesTodayByTime(
     getTime().time
   );
+
+  // console.log();
   if (!ls.get("location")) {
     onClickSettings();
   }
