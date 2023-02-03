@@ -10,6 +10,9 @@ import { ref } from "vue";
 import { getTime } from "src/utilities/time-util.js";
 import { useStudentActivitiesStore } from "src/stores/student-activities-store";
 
+import { sendMessage } from "./whatsapp-service";
+import ls from "localstorage-slim";
+
 const useStudentAtivities = useStudentActivitiesStore();
 const useStudentSchedules = useStudentScheduleStore();
 const useSchedules = useScheduleStore();
@@ -21,16 +24,22 @@ export const submit = async (input) => {
 
   await useStudents.getStudentByNisFromDB(input);
   const student = useStudents.getStudentByNis();
+  console.log(student?.phone_1);
   // const isStudent = student?.nis == input;
 
   const studentSchedule = useStudentSchedules.getStudentScheduleByNis(input);
   const schedule = useSchedules.getScheduleById(studentSchedule?.schedule_id);
 
-  const locationId = localStorage.getItem("location");
+  const locationId = ls.get("location");
   const isRightClass = schedule?.class_id === locationId.toString();
 
-  const activity = () => useStudentAtivities.getActivityByTime(getTime().time);
-  const activityId = localStorage.getItem("activityId");
+  const activity = () =>
+    useStudentAtivities.getActivitiesTodayByTime(getTime().time);
+  const activityId = ls.get("activityId");
+
+  const message = `Santri atas nama *${student?.name}* absen masuk pkl. *${
+    getTime().time
+  }* \nuntuk kegiatan *${ls.get("activityName")}*`;
 
   const attendee = ref({
     student_nis: input,
@@ -63,6 +72,7 @@ export const submit = async (input) => {
       successAudio.play();
       attendee.value.name = student?.name;
       attendee.value.activity = activity()?.name;
+      sendMessage(`0${student?.phone_1}`, message);
 
       useAttendances.addAttendance(attendee.value);
       const dialog = Dialog.create({

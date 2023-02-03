@@ -129,7 +129,7 @@ const $q = useQuasar();
 const inputValue = ref("");
 const input = ref(null);
 
-const listMode = ref(ls.get("listMode"));
+// const listMode = ref(ls.get("listMode"));
 
 const today = new Date();
 const date = getTime().date;
@@ -161,9 +161,6 @@ const presenceTimeStart = () => {
 };
 
 const presenceTimeEnd = () => {
-  // ls.set("activityId", null);
-  // ls.set("activityName", null);
-  // activityName.value = "null";
   isPresenceTime.value = false;
 };
 
@@ -191,20 +188,6 @@ const scheduleChecker = () => {
   }
 };
 
-onMounted(async () => {
-  // console.log(ls.get("tesLS"));
-  await studentActivityByDay();
-  activity.value = useStudentActivities.getActivitiesTodayByTime(
-    getTime().time
-  );
-  if (!ls.get("location")) {
-    onClickSettings();
-  }
-  // scheduleChecker();
-  checkScheduleOnMounted();
-  studentAttendances.getAttendancesFromDB();
-});
-
 setInterval(() => {
   now.value = getTime().time;
   // console.log(activity.value);
@@ -226,6 +209,22 @@ const submitAttendance = () => {
   submit(inputValue.value);
   inputValue.value = "";
 };
+
+onMounted(async () => {
+  // console.log(ls.get("location"));
+  await studentActivityByDay();
+  activity.value = useStudentActivities.getActivitiesTodayByTime(
+    getTime().time
+  );
+
+  // console.log();
+  if (!ls.get("location")) {
+    onClickSettings();
+  }
+  // scheduleChecker();
+  checkScheduleOnMounted();
+  studentAttendances.getAttendancesFromDB();
+});
 </script>
 
 <style scoped>
